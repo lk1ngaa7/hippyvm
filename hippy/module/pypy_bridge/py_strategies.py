@@ -71,8 +71,12 @@ class PHPArrayListStrategy(ListStrategy):
         w_php_arry_ref = self.unerase(w_list.lstorage)
         w_php_key = php_space.wrap(key) # key always an int
         w_php_value = w_value.to_php(interp)
+        w_php_arry = w_php_arry_ref.deref_temp()
 
-        w_php_arry_ref.setitem_ref(php_space, w_php_key, w_php_value)
+        #w_php_arry_ref.setitem_ref(php_space, w_php_key, w_php_value)
+        # when writing a php array from python, we don't want to fire
+        # any copy on write mechanisms. Always mutate in place.
+        w_php_arry.setitem_inplace(php_space, w_php_keym w_php_value)
 
     def append(self, w_list, w_item):
         interp = self.space.get_php_interp()
@@ -81,9 +85,11 @@ class PHPArrayListStrategy(ListStrategy):
         w_php_arry_ref = self.unerase(w_list.lstorage)
         w_php_item = w_item.to_php(interp)
         w_php_arry = w_php_arry_ref.deref_temp()
-        w_php_next_idx = php_space.wrap(w_php_arry.arraylen())
+        #w_php_next_idx = php_space.wrap(w_php_arry.arraylen())
 
-        w_php_arry_ref.setitem_ref(php_space, w_php_next_idx, w_php_item)
+        # when writing a php array from python, we don't want to fire
+        # any copy on write mechanisms. Always mutate in place.
+        w_php_arry.appenditem_inplace(php_space, w_php_item)
 
 def make_wrapped_int_key_php_array(interp, w_php_arry_ref):
     assert isinstance(w_php_arry_ref, W_Reference)

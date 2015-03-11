@@ -234,10 +234,17 @@ class W_ArrayObject(W_Object):
         else:
             return self._setitem_str(as_str, w_ref, True)
 
-    def appenditem_inplace(self, space, w_item, as_ref=False):
-        # For now this always succeeds in appending the item in-place.
-        # It may need to be reconsidered if we add more strategies.
-        self._appenditem(w_item, as_ref)
+    #def appenditem_inplace(self, space, w_item, as_ref=False):
+    #    # For now this always succeeds in appending the item in-place.
+    #    # It may need to be reconsidered if we add more strategies.
+    #    self._appenditem(w_item, as_ref)
+    #    return w_item
+
+    # As with appenditem_inplace, use with extreme caution, you will be
+    # completely bypassing copy-on-write.
+    def setitem_inplace(self, space, w_key, w_value)
+        self._setitem_inplace(w_item, as_ref)
+        # XXX implement the above in the two subclasses
         return w_item
 
     def packitem_maybe_inplace(self, space, w_arg, w_value):
@@ -499,6 +506,9 @@ class W_ListArrayObject(W_ArrayObject):
 
     def _appenditem(self, w_obj, as_ref=False):
         self.lst_w.append(w_obj)
+
+    #def _setitem_inplace(self, w_key, w_value):
+    #    self.
 
     def _setitem_int(self, index, w_value, as_ref, unique_item=False):
         length = self.arraylen()
