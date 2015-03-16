@@ -1301,4 +1301,4 @@ class TestPyPyBridgeArrayConversionsInterp(BaseTestInterpreter):
 
         echo f(array("a" => "zzz", 0 => 666));
         ''')
-        assert php_space.int_w(output[0]) == "zzz"
+        assert php_space.str_w(output[0]) == "zzz"
